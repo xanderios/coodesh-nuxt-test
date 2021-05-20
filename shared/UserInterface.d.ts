@@ -1,4 +1,4 @@
-export interface user {
+export interface IUser {
   gender: string
   name: {
     title: string
@@ -6,7 +6,10 @@ export interface user {
     last: string
   }
   location?: {
-    street: string
+    street: {
+      name: string
+      number: number
+    }
     city: string
     state: string
     postcode: string
@@ -21,7 +24,7 @@ export interface user {
   }
   email?: string
   dob?: {
-    date: string
+    date: Date
     age: number
   }
   phone?: string

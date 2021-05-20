@@ -6,7 +6,7 @@ This is a test project for a frontend developer job at @Coodesh
 
 1. Frontend framework: [Nuxt.js](https://nuxtjs.org/)
 2. CSS framework: [TailwindCSS](http://tailwindcss.com/)
-3. Icons: [Font Awesome](https://fontawesome.com/) with [vue-font-awesome](https://www.npmjs.com/package/@fortawesome/vue-fontawesome)
+3. Icons: [Font Awesome](https://fontawesome.com/) with [@nuxtjs/fontawesome](https://www.npmjs.com/package/@nuxtjs/fontawesome)
 
 ## Setup instructions
 

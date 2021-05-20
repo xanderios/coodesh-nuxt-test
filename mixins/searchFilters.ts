@@ -1,32 +1,44 @@
 import Vue from 'vue'
-import { user } from '~/shared/user'
-import { filters } from '~/shared/filters'
+import { IUser } from '~/shared/UserInterface'
+
+interface filters {
+  filterBy: string | 'none' | 'name' | 'nationality'
+  gender: string | 'none' | 'male' | 'female'
+}
 
 export default Vue.extend({
   methods: {
-    filter(
-      list: Array<user>,
-      seachQuery: string,
-      filters: filters
-    ): Array<user> {
+    filter(list: IUser[], seachQuery: string, filters: filters): IUser[] {
       seachQuery = seachQuery.toLowerCase()
       const queryLetters: string[] = seachQuery.split(' ')
 
+      function filterByName(arr: IUser[]): IUser[] {
+        return arr.filter((user: IUser) =>
+          queryLetters.every((v) => user.name.first.toLowerCase().includes(v))
+        )
+      }
+
+      function filterByNat(arr: IUser[]): IUser[] {
+        return arr.filter((user: IUser) =>
+          queryLetters.every((v) => user.nat.toLowerCase().includes(v))
+        )
+      }
+
       if (seachQuery.length > 0) {
+        if (filters.filterBy === 'none') {
+          list = [...filterByName(list), ...filterByNat(list)]
+        }
         if (filters.filterBy === 'name') {
-          list = list.filter((user) =>
-            queryLetters.every((v) => user.name.first.toLowerCase().includes(v))
-          )
+          list = filterByName(list)
         }
         if (filters.filterBy === 'nationality') {
-          list = list.filter((user: user) => {
-            return queryLetters.every((v) => user.nat.toLowerCase().includes(v))
-          })
+          list = filterByNat(list)
         }
       }
 
       if (filters.gender !== 'none')
-        return list.filter((user: user) => user.gender === filters.gender)
+        return list.filter((user: IUser) => user.gender === filters.gender)
+
       return list
     },
   },
