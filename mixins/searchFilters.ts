@@ -14,7 +14,11 @@ export default Vue.extend({
 
       function filterByName(arr: IUser[]): IUser[] {
         return arr.filter((user: IUser) =>
-          queryLetters.every((v) => user.name.first.toLowerCase().includes(v))
+          queryLetters.every(
+            (v) =>
+              user.name.first.toLowerCase().includes(v) ||
+              user.name.last.toLowerCase().includes(v)
+          )
         )
       }
 

@@ -1,28 +1,24 @@
 <template>
-  <div class="max-w-6xl mx-auto mt-12">
-    <ul>
-      <div class="flex items-center gap-x-4 text-gray-400 px-4 py-4">
-        <span class="w-8">#</span>
-        <span class="flex-1">Pacient</span>
-        <span class="w-16 text-center">Gender</span>
-        <span class="w-16 text-center">Age</span>
-        <span class="w-16 text-center">Nat</span>
-        <span class="w-48"
-          >Date of birth <FontAwesomeIcon :icon="['fas', 'birthday-cake']"
-        /></span>
-        <span class="w-32"></span>
-      </div>
-      <li v-for="(user, index) in users" :key="index">
-        <ListItem
+  <div class="max-w-6xl mx-auto mt-12 text-sm lg:text-base">
+    <table class="table-fixed border-separate w-full">
+      <thead>
+        <ListHeader />
+      </thead>
+      <tbody>
+        <ListData
+          v-for="user in users"
+          :key="user.index"
           :user="user"
-          :index="index"
           :is-loading="isLoading"
           @set-user-info="$emit('set-user-info', user)"
         />
-      </li>
-    </ul>
+      </tbody>
+    </table>
     <Button
-      :class="['block mx-auto mt-8 mb-16', isLoading && 'bg-gray-500']"
+      :class="[
+        'block mx-auto shadow-md mt-8 mb-16',
+        isLoading && 'bg-gray-500',
+      ]"
       :disabled="isLoading ? true : false"
       @click="$emit('load-more-users')"
     >
@@ -36,10 +32,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ListItem from '~/components/UserList/ListItem.vue'
+
+import Button from '~/components/Button.vue'
+import ListData from '~/components/UserList/ListData.vue'
+import ListHeader from '~/components/UserList/ListHeader.vue'
 
 export default Vue.extend({
-  components: { ListItem },
+  components: { Button, ListData, ListHeader },
   props: {
     users: {
       type: undefined,
@@ -52,3 +51,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style scoped>
+table {
+  border-spacing: 0;
+}
+</style>

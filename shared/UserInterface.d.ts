@@ -1,4 +1,5 @@
 export interface IUser {
+  index?: number
   gender: string
   name: {
     title: string

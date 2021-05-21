@@ -1,59 +1,100 @@
 <template>
-  <form class="max-w-3xl mx-auto mt-12">
-    <p class="text-xl text-gray-500 text-center">
+  <div class="max-w-3xl mx-auto mt-12">
+    <p class="text-sm sm:text-xl text-gray-500 text-center">
       Some lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
       assumenda nesciunt voluptatibus aperiam, natus quasi vel dolor mollitia
       pariatur.
     </p>
-    <div class="flex items-center gap-x-2 mt-8">
-      <input
-        id=""
-        type="text"
-        name="firstName"
-        :class="['h-12 flex-1 px-4', inputClasses]"
-        :placeholder="queryPlaceholder"
-        :value="searchQuery"
-        @input="$emit('handle-query', $event.target.value)"
-      />
-      <select
-        id=""
-        name="searchFilter"
-        :class="['h-12 pl-4 pr-8', inputClasses]"
-        :value="filters.filterBy"
-        @change="$emit('handle-filter-by', $event.target.value)"
-      >
-        <option value="none" selected>Filter by</option>
-        <option value="name">Name</option>
-        <option value="nationality">Nationality</option>
-      </select>
-      <div class="h-12 flex border text-2xl border-gray-300 rounded">
-        <button
-          :class="[
-            'rounded-l',
-            filters.gender === 'male'
-              ? 'bg-indigo-500 text-white'
-              : 'bg-white text-blue-500',
-            genderClasses,
-          ]"
-          @click="handleGender($event, 'male')"
-        >
-          <FontAwesomeIcon :icon="['fas', 'mars']" />
-        </button>
-        <button
-          :class="[
-            'rounded-r',
-            filters.gender === 'female'
-              ? 'bg-indigo-500 text-white'
-              : 'bg-white text-pink-500',
-            genderClasses,
-          ]"
-          @click="handleGender($event, 'female')"
-        >
-          <FontAwesomeIcon :icon="['fas', 'venus']" />
-        </button>
+    <form class="flex flex-col items-center sm:flex-row gap-x-2 mt-8 mx-auto">
+      <div class="group-focus-within:text-indigo-500 relative w-full">
+        <input
+          id=""
+          type="text"
+          name="firstName"
+          class="
+            block
+            h-10
+            w-full
+            px-4
+            rounded
+            border border-gray-300
+            focus:border-indigo-500
+            outline-none
+            appearance-none
+            transition-all
+            duration-200
+          "
+          :placeholder="queryPlaceholder"
+          :value="searchQuery"
+          @input="$emit('handle-query', $event.target.value)"
+        />
+        <FontAwesomeIcon
+          :icon="['fas', 'search']"
+          class="absolute right-3 top-3 text-gray-400"
+        />
       </div>
-    </div>
-  </form>
+      <div class="inline-flex w-full sm:w-min gap-x-2 mt-2 sm:mt-0">
+        <select
+          id=""
+          name="searchFilter"
+          class="
+            inline-block
+            h-10
+            pl-4
+            pr-8
+            rounded
+            border border-gray-300
+            focus:border-indigo-500
+            outline-none
+            appearance-none
+            transition-all
+            duration-200
+          "
+          :value="filters.filterBy"
+          @change="$emit('handle-filter-by', $event.target.value)"
+        >
+          <option value="none" selected>Filter by</option>
+          <option value="name">Name</option>
+          <option value="nationality">Nationality</option>
+        </select>
+        <div
+          class="
+            h-10
+            inline-flex
+            border
+            text-xl
+            lg:text-2xl
+            border-gray-300
+            rounded
+          "
+        >
+          <button
+            :class="[
+              'rounded-l px-3 outline-none focus:outline-none transition-all duration-200',
+              filters.gender === 'male'
+                ? 'bg-indigo-500 text-white'
+                : 'bg-white text-blue-500',
+            ]"
+            @click="handleGender($event, 'male')"
+          >
+            <FontAwesomeIcon :icon="['fas', 'mars']" />
+          </button>
+          <span class="block h-full bg-gray-300 w-px" />
+          <button
+            :class="[
+              'rounded-r px-3 outline-none focus:outline-none transition-all duration-200',
+              filters.gender === 'female'
+                ? 'bg-indigo-500 text-white'
+                : 'bg-white text-pink-500',
+            ]"
+            @click="handleGender($event, 'female')"
+          >
+            <FontAwesomeIcon :icon="['fas', 'venus']" />
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -72,16 +113,9 @@ export default Vue.extend({
   },
   computed: {
     queryPlaceholder() {
-      if (this.filters.filterBy === 'name') return 'Username, eg: "John Doe"'
-      if (this.filters.filterBy === 'nationality')
-        return 'Nationality, eg: "EN"'
-      return 'Select a filter'
-    },
-    inputClasses() {
-      return 'rounded border border-gray-300 focus:border-indigo-500 outline-none appearance-none transition-all duration-200'
-    },
-    genderClasses() {
-      return 'px-4 outline-none focus:outline-none transition-all duration-200'
+      if (this.filters.filterBy === 'name') return 'eg: "John Doe"'
+      if (this.filters.filterBy === 'nationality') return 'eg: "EN"'
+      return 'Filter users'
     },
   },
   methods: {

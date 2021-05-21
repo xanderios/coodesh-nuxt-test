@@ -15,12 +15,15 @@
       class="
         relative
         bg-white
-        p-8
+        p-4
+        sm:p-8
+        mx-4
         rounded-lg
         shadow-lg
         flex flex-col
         items-center
-        max-w-lg
+        max-w-xs
+        sm:max-w-lg
       "
     >
       <button
@@ -29,10 +32,10 @@
       >
         <font-awesome-icon :icon="['fas', 'times']" />
       </button>
-      <div v-if="userInfo" class="flex flex-col mt-16">
+      <div v-if="userInfo" class="flex flex-col mt-24 sm:mt-16">
         <ProfilePic :profile-pic="profilePic" />
         <div class="text-center">
-          <p class="inline-block text-indigo-500 text-2xl font-bold">
+          <p class="inline-block text-indigo-500 text-xl sm:text-2xl font-bold">
             {{ fullName }}
           </p>
           <font-awesome-icon
@@ -56,8 +59,24 @@
           <InfoRow icon="map-marker-alt" :text="address" />
           <InfoRow icon="portrait" :text="userInfo.id.value" />
         </div>
+
+        <Button class="inline-block mt-4" @click="copyLink"
+          >Share this user
+          <FontAwesomeIcon :icon="['fas', 'link']" class="ml-1"
+        /></Button>
       </div>
     </div>
+    <span
+      :class="[
+        'fixed bottom-0 transform inset-x-0 lg:inset-x-auto lg:left-[50%] lg:translate-x-[-50%] z-40 mx-4 mb-4 lg:mx-0 lg:mb-8 pointer-events-none bg-indigo-500 text-white px-8 py-4 rounded-lg shadow-md text-base lg:text-xl text-center font-medium transition-all duration-200',
+        copyWarn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
+      ]"
+      ><font-awesome-icon
+        :icon="['fas', 'copy']"
+        class="text-primary-300 mr-2"
+      />
+      Link copied to the transfer area.</span
+    >
   </div>
 </template>
 
@@ -80,6 +99,16 @@ export default Vue.extend({
       type: Object,
       default: () => ({}),
     },
+    page: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      copyWarn: false,
+      copyInterval: setInterval(() => {}, 999999),
+    }
   },
   computed: {
     profilePic() {
@@ -101,6 +130,24 @@ export default Vue.extend({
     address() {
       const { location } = this.userInfo as IUser
       return `${location?.street.number} ${location?.street.name}, ${location?.city}, ${location?.state}, ${location?.postcode}`
+    },
+    shareLink(): string {
+      return `${window.location.origin}?p=${
+        this.page
+      }&name=${this.fullName.replace(' ', '%20')}&gender=${
+        this.userInfo.gender
+      }`
+    },
+  },
+  methods: {
+    copyLink(): void {
+      console.log(this.shareLink)
+      clearInterval(this.copyInterval)
+      navigator.clipboard.writeText(this.shareLink)
+      this.copyWarn = true
+      this.copyInterval = setTimeout((): void => {
+        this.copyWarn = false
+      }, 3000)
     },
   },
 })

@@ -19,6 +19,7 @@
       <UserModal
         :is-active="showUserInfo"
         :user-info="userInfo"
+        :page="currentPage"
         @close-user-info="showUserInfo = false"
       />
     </div>
@@ -44,13 +45,13 @@ export default FilterMixin.extend({
     return {
       showUserInfo: false,
       userInfo: null as null | Object,
-      users: [] as Array<IUser>,
+      users: [] as IUser[],
       searchQuery: '',
       filters: {
         filterBy: 'none',
         gender: 'none',
       },
-      page: 0,
+      currentPage: 1,
       isLoading: false,
     }
   },
@@ -60,7 +61,16 @@ export default FilterMixin.extend({
     },
   },
   mounted() {
-    this.loadMoreUsers()
+    const { p, name, gender } = this.$route.query
+    this.currentPage = Number(p) || 1
+    if (name) {
+      this.filters.filterBy = 'name'
+      this.searchQuery = (name as string).replace('%20', ' ')
+    }
+    if (gender) {
+      this.filters.gender = gender as string
+    }
+    this.fetchUsers()
   },
   methods: {
     handleQuery(v: string): void {
@@ -79,20 +89,26 @@ export default FilterMixin.extend({
       await this.$axios
         .get(
           // Exclude unused values `exc=login,registered,cell`
-          `https://randomuser.me/api/1.3/?exc=login,registered,cell&page=${this.page}&results=10&seed=foo`
+          `https://randomuser.me/api/1.3/?exc=login,registered,cell&page=${this.currentPage}&results=50&seed=foo`
         )
         .then((response) => response.data.results)
         .then((res) => {
-          this.users = [...this.users, ...res]
+          this.users = [...this.users, ...res].map((user: IUser, index) => ({
+            ...user,
+            index,
+          }))
           this.isLoading = false
         })
       // }, 3000)
     },
     loadMoreUsers(): void {
-      this.page += 1
+      this.filters.filterBy = 'none'
+      this.filters.gender = 'none'
+      this.searchQuery = ''
+      this.currentPage += 1
       this.fetchUsers()
     },
-    setUserInfo(user: IUser) {
+    setUserInfo(user: IUser): void {
       this.userInfo = user
       this.showUserInfo = true
     },

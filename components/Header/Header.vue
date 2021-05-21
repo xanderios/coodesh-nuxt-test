@@ -1,9 +1,15 @@
 <template>
-  <div class="bg-indigo-500 text-white py-4">
+  <div class="relative bg-indigo-500 shadow-md text-white py-4">
     <div class="container mx-auto flex items-center justify-between">
-      <p class="text-2xl font-bold select-none">Pharma Inc</p>
+      <a href="/" class="text-lg sm:text-2xl font-bold select-none">
+        <FontAwesomeIcon
+          :icon="['fas', 'capsules']"
+          class="fa-fw transform rotate-90"
+        />
+        Pharma Inc
+      </a>
       <div class="flex items-center">
-        <div class="text-right mr-2">
+        <div class="hidden sm:block text-right mr-2">
           <p class="text-xs">{{ randomUser ? 'Logged in as' : 'Hello,' }}</p>
           <p class="font-bold">{{ userName }}</p>
         </div>

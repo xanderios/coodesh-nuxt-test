@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center text-sm sm:text-base">
     <font-awesome-icon
       :icon="['fas', icon]"
       class="text-xl text-indigo-500 mr-2 fa-fw"
     />
-    <p>{{ text || 'N/A' }}</p>
+    <p>{{ text || 'Unavailable' }}</p>
   </div>
 </template>
 
