@@ -5,8 +5,10 @@ This is a test project for a frontend developer job at @Coodesh
 ## Resources
 
 1. Frontend framework: [Nuxt.js](https://nuxtjs.org/)
-2. CSS framework: [TailwindCSS](http://tailwindcss.com/)
-3. Icons: [Font Awesome](https://fontawesome.com/) with [@nuxtjs/fontawesome](https://www.npmjs.com/package/@nuxtjs/fontawesome)
+2. Request handling: [@nuxtjs/axios](https://axios.nuxtjs.org/)
+3. CSS framework: [TailwindCSS](http://tailwindcss.com/)
+4. Icons: [Font Awesome](https://fontawesome.com/) with [@nuxtjs/fontawesome](https://www.npmjs.com/package/@nuxtjs/fontawesome/)
+5. Date handling: [Day.js](https://day.js.org/)
 
 ## Setup instructions
 
